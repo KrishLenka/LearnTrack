@@ -4,17 +4,29 @@ from flask import Blueprint, request, jsonify
 import hashlib
 from database import get_connection
 
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/signup', methods=['POST'])
 def signup():
+    print("Received signup request")
     data = request.get_json()
-    username = data.get('username')
+    print("Request data:", data)
+    
+    name = data.get('name')
     email = data.get('email')
     password = data.get('password')
+    age = data.get('age')
+    
+    print(f"Extracted fields - name: {name}, email: {email}, password: {'*' * len(password) if password else None}, age: {age}")
 
-    if not username or not email or not password:
-        return jsonify({'message': 'Missing required fields'}), 400
+    if not name:
+        return jsonify({'message': 'Missing name field'}), 400
+    if not email:
+        return jsonify({'message': 'Missing email field'}), 400
+    if not password:
+        return jsonify({'message': 'Missing password field'}), 400
+    if age is None:
+        return jsonify({'message': 'Missing age field'}), 400
 
     # Check if the user already exists
     connection = get_connection()
@@ -34,8 +46,8 @@ def signup():
     connection = get_connection()
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (username, email, password_hash))
+            sql = "INSERT INTO users (username, email, password, age) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (name, email, password_hash, age))
         connection.commit()
     finally:
         connection.close()

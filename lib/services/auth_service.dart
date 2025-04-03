@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,21 @@ class User {
 }
 
 class AuthService {
-  final String baseUrl = 'http://localhost:5000/api'; // Change to your Flask API URL
+  String get baseUrl {
+    // When running on iOS Simulator, use host.docker.internal
+    if (Platform.isIOS) {
+      return 'http://127.0.0.1:5000/';
+    }
+    // When running on Android Emulator, use 10.0.2.2
+    else if (Platform.isAndroid) {
+      return 'http://10.0.2.2:5000/api';
+    }
+    // For web or desktop platforms
+    else {
+      return 'http://127.0.0.1:5000/api';
+    }
+  }
+  
   User? _currentUser;
   
   // Get the current authenticated user
