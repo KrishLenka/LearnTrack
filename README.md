@@ -12,13 +12,13 @@ Whether you're learning to code, studying for exams, or diving into a new unit, 
 
 Try it out and your future self will thank you.
 
+## Curious about our tech-stack?
+LearnTrack is in Flutter with Flask + GeminiAPI backend and MySQL database.
+
 ## Demo
 https://github.com/user-attachments/assets/9076af96-a5db-4cb2-b2f4-d2d80d5a3f21
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
 A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
